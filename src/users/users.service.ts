@@ -11,14 +11,14 @@ export class UsersService {
   constructor(@InjectRepository(User) private readonly usersRepo: Repository<User>) {
   }
 
-  public async create(createUserDto: CreateUserDto, skipWorkerCheck = false): Promise<User> {
+  public async create(createUserDto: CreateUserDto, isAdmin = false): Promise<User> {
     if (await this.usersRepo.findOne({ username: createUserDto.username })) {
       throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
     }
     if (await this.usersRepo.findOne({ email: createUserDto.email })) {
       throw new HttpException('Email is already exists', HttpStatus.BAD_REQUEST);
     }
-    if (skipWorkerCheck) {
+    if (isAdmin) {
 
     }
 
