@@ -4,6 +4,10 @@ import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiCustomAuth } from 'src/utils/decorators/api-auth.decorator';
+import { UserPolicyGuard } from 'src/auth/policy/user-policy.guard';
+import { UserPolicy } from 'src/auth/policy/user-policy.decorator';
+import { AbilityActions } from 'src/auth/policy/user-ability.factory';
+import { Role } from './entities/role.entity';
 
 @ApiCustomAuth()
 @ApiTags('Roles')
@@ -12,27 +16,37 @@ export class RolesController {
   constructor(private readonly rolesService: RolesService) {}
 
   @Post()
-  create(@Body() createRoleDto: CreateRoleDto) {
+  @UseGuards(UserPolicyGuard)
+  @UserPolicy((ability) => ability.can(AbilityActions.Create, Role))
+  public create(@Body() createRoleDto: CreateRoleDto) {
     return this.rolesService.create(createRoleDto);
   }
 
   @Get()
-  findAll() {
+  @UseGuards(UserPolicyGuard)
+  @UserPolicy((ability) => ability.can(AbilityActions.Read, Role))
+  public findAll() {
     return this.rolesService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
+  @UseGuards(UserPolicyGuard)
+  @UserPolicy((ability) => ability.can(AbilityActions.Read, Role))
+  public findOne(@Param('id') id: string) {
     return this.rolesService.findOne(+id);
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
+  @UseGuards(UserPolicyGuard)
+  @UserPolicy((ability) => ability.can(AbilityActions.Update, Role))
+  public update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {
     return this.rolesService.update(+id, updateRoleDto);
   }
 
   @Delete(':id')
-  remove(@Param('id') id: string) {
+  @UseGuards(UserPolicyGuard)
+  @UserPolicy((ability) => ability.can(AbilityActions.Delete, Role))
+  public remove(@Param('id') id: string) {
     return this.rolesService.remove(+id);
   }
 }

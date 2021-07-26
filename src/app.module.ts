@@ -6,9 +6,10 @@ import { RolesModule } from './roles/roles.module';
 import { ClaimsModule } from './claims/claims.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt/jwt.guard';
+import { PolicyModule } from './auth/policy/policy.module';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), UsersModule, AuthModule, RolesModule, ClaimsModule],
+  imports: [TypeOrmModule.forRoot(), UsersModule, AuthModule, RolesModule, ClaimsModule, PolicyModule],
   controllers: [],
   providers: [
     {

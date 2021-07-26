@@ -1,9 +1,26 @@
-{
-  "type": "mysql",
-  "host": "localhost",
-  "port": 3306,
-  "username": "root",
-  "database": "geo_platform",
-  "entities": ["dist/**/*.entity{.ts,.js}"],
-  "synchronize": true
-}
+[
+  {
+    "type": "mysql",
+    "host": "localhost",
+    "port": 3306,
+    "username": "root",
+    "database": "geo_platform",
+    "entities": ["dist/**/*.entity{.ts,.js}"],
+    "synchronize": true
+  },
+  {
+    "name": "seed",
+    "type": "mysql",
+    "host": "localhost",
+    "port": 3306,
+    "username": "root",
+    "database": "geo_platform",
+    "entities": ["dist/**/*.entity{.ts,.js}"],
+    "migrations": [
+      "src/data/seeds/*.ts"
+    ],
+    "cli": {
+      "migrationsDir": "src/data/seeds"
+    }
+  }
+]

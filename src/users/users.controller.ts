@@ -16,6 +16,10 @@ import { User } from './entities/user.entity';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiCustomAuth } from 'src/utils/decorators/api-auth.decorator';
+import { UseGuards } from '@nestjs/common';
+import { UserPolicyGuard } from 'src/auth/policy/user-policy.guard';
+import { UserPolicy } from 'src/auth/policy/user-policy.decorator';
+import { AbilityActions } from 'src/auth/policy/user-ability.factory';
 
 @ApiTags('User')
 @ApiCustomAuth()
@@ -25,36 +29,36 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Post()
+  @UseGuards(UserPolicyGuard)
+  @UserPolicy((ability) => ability.can(AbilityActions.Create, User))
   public create(@Body() createUserDto: CreateUserDto): Promise<User> {
     return this.usersService.create(createUserDto);
   }
 
-  @Post('init')
-  public initialize() {
-    return this.usersService.create({
-      email: 'cvobodne@yandex.ru',
-      username: 'Ilya_Kremniou',
-      registerToken: 'adminToken',
-      password: 'passwd',
-    });
-  }
-
   @Get()
+  @UseGuards(UserPolicyGuard)
+  @UserPolicy((ability) => ability.can(AbilityActions.Read, User))
   public findAll() {
     return this.usersService.findAll();
   }
 
   @Get(':id')
+  @UseGuards(UserPolicyGuard)
+  @UserPolicy((ability) => ability.can(AbilityActions.Read, User))
   public findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);
   }
 
   @Patch(':id')
+  @UseGuards(UserPolicyGuard)
+  @UserPolicy((ability) => ability.can(AbilityActions.Update, User))
   public update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<UpdateResult> {
     return this.usersService.update(+id, updateUserDto);
   }
 
   @Delete(':id')
+  @UseGuards(UserPolicyGuard)
+  @UserPolicy((ability) => ability.can(AbilityActions.Delete, User))
   public remove(@Param('id') id: string): Promise<DeleteResult> {
     return this.usersService.remove(+id);
   }
