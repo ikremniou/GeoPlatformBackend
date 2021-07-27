@@ -19,10 +19,10 @@ export class seeds1627332577762 implements MigrationInterface {
   }
 
   public async down(queryRunner: QueryRunner): Promise<void> {
-    const role = await queryRunner.manager.findOne(Role, { name: 'Admin' });
-    await queryRunner.manager.remove(role);
-
     const admin = await queryRunner.manager.findOne(User, { username: 'Ilya_Kremniou'});
     await queryRunner.manager.remove(admin);
+
+    const role = await queryRunner.manager.findOne(Role, { name: 'Admin' });
+    await queryRunner.manager.remove(role);
   }
 }

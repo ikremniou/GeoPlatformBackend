@@ -16,9 +16,7 @@
     "username": "root",
     "database": "geo_platform",
     "entities": ["dist/**/*.entity{.ts,.js}"],
-    "migrations": [
-      "src/data/seeds/*.ts"
-    ],
+    "migrations": ["dist/data/seeds/*.js"],
     "cli": {
       "migrationsDir": "src/data/seeds"
     }

@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+  UseInterceptors,
+  ClassSerializerInterceptor,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { AbilityActions } from 'src/auth/policy/user-ability.factory';
 import { UserPolicy } from 'src/auth/policy/user-policy.decorator';
@@ -12,6 +23,7 @@ import { Claim } from './entities/claim.entity';
 @ApiCustomAuth()
 @ApiTags('Claims')
 @Controller('claims')
+@UseInterceptors(ClassSerializerInterceptor)
 export class ClaimsController {
   constructor(private readonly claimsService: ClaimsService) {}
 
