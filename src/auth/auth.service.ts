@@ -12,7 +12,7 @@ export class AuthService {
     }
 
     public async validate(username: string, passwd: string): Promise<User> {
-        const user = await this.userService.findByUsername(username);
+        const user = await this.userService.getUserWillRoles(username);
         if (user) {
             if (await bcrypt.compare(passwd, user.password)) {
                 return user;
@@ -22,7 +22,7 @@ export class AuthService {
     }
 
     public async login(user: User) {
-        const payload = { username: user.username, userId: user.id, roleId: user.role };
+        const payload = { username: user.username, userId: user.id, roleId: user.role?.id };
         return {
             token_type: 'bearer',
             access_token: this.jwtService.sign(payload)

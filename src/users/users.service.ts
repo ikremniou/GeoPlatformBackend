@@ -8,8 +8,7 @@ import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
-  constructor(@InjectRepository(User) private readonly usersRepo: Repository<User>) {
-  }
+  constructor(@InjectRepository(User) private readonly usersRepo: Repository<User>) {}
 
   public async create(createUserDto: CreateUserDto, isAdmin = false): Promise<User> {
     if (await this.usersRepo.findOne({ username: createUserDto.username })) {
@@ -19,7 +18,6 @@ export class UsersService {
       throw new HttpException('Email is already exists', HttpStatus.BAD_REQUEST);
     }
     if (isAdmin) {
-
     }
 
     createUserDto.password = await bcrypt.hash(createUserDto.password, createUserDto.username.length);
@@ -30,12 +28,16 @@ export class UsersService {
     return this.usersRepo.find();
   }
 
-  public findOne(id: number) {
+  public async findOne(id: number) {
+    if (!id) {
+      return undefined;
+    }
+
     return this.usersRepo.findOne(id);
   }
 
-  public findByUsername(username: string): Promise<User> {
-    return this.usersRepo.findOne({ username });
+  public getUserWillRoles(username: string): Promise<User> {
+    return this.usersRepo.findOne({ username }, { relations: ['role'] });
   }
 
   public update(id: number, updateUserDto: UpdateUserDto) {

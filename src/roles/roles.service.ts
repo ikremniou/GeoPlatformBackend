@@ -38,7 +38,11 @@ export class RolesService {
     return this._roleRepository.find();
   }
 
-  public findOne(id: number): Promise<Role> {
+  public async findOne(id: number): Promise<Role> {
+    if (!id) {
+      return undefined;
+    }
+
     return this._roleRepository.findOne(id);
   }
 

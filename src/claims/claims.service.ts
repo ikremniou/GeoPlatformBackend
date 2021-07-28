@@ -18,6 +18,10 @@ export class ClaimsService {
   }
 
   public findOne(id: number): Promise<Claim> {
+    if (!id) {
+      return undefined;
+    }
+
     return this._repository.findOne(id);
   }
 
