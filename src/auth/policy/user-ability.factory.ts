@@ -1,6 +1,7 @@
 import { Ability, AbilityBuilder, AbilityClass, ExtractSubjectType, InferSubjects } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
 import { Claim } from 'src/claims/entities/claim.entity';
+import { Invite } from 'src/invite/entities/invite.entity';
 import { Role } from 'src/roles/entities/role.entity';
 import { RolesService } from 'src/roles/roles.service';
 import { User } from 'src/users/entities/user.entity';
@@ -14,7 +15,7 @@ export enum AbilityActions {
   Delete = 'delete',
 }
 
-type AbilitySubjects = InferSubjects<typeof User | typeof Claim | typeof Role> | 'all';
+type AbilitySubjects = InferSubjects<typeof User | typeof Claim | typeof Role | typeof Invite> | 'all';
 
 export type AppAbility = Ability<[AbilityActions, AbilitySubjects]>;
 

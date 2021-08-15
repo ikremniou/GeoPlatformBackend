@@ -15,7 +15,7 @@ import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
 import { DeleteResult, UpdateResult } from 'typeorm';
 import { ApiTags } from '@nestjs/swagger';
-import { ApiCustomAuth } from 'src/utils/decorators/api-auth.decorator';
+import { ApiCustomAuth } from 'src/misc/decorators/api-auth.decorator';
 import { UseGuards } from '@nestjs/common';
 import { UserPolicyGuard } from 'src/auth/policy/user-policy.guard';
 import { UserPolicy } from 'src/auth/policy/user-policy.decorator';

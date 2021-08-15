@@ -14,7 +14,7 @@ import { ApiTags } from '@nestjs/swagger';
 import { AbilityActions } from 'src/auth/policy/user-ability.factory';
 import { UserPolicy } from 'src/auth/policy/user-policy.decorator';
 import { UserPolicyGuard } from 'src/auth/policy/user-policy.guard';
-import { ApiCustomAuth } from 'src/utils/decorators/api-auth.decorator';
+import { ApiCustomAuth } from 'src/misc/decorators/api-auth.decorator';
 import { ClaimsService } from './claims.service';
 import { CreateClaimDto } from './dto/create-claim.dto';
 import { UpdateClaimDto } from './dto/update-claim.dto';

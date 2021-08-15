@@ -1,0 +1,29 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Worker {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+type Query {
+  worker(id: Int!): Worker!
+}
+
+type Mutation {
+  createWorker(createWorkerInput: CreateWorkerInput!): Worker!
+  updateWorker(updateWorkerInput: UpdateWorkerInput!): Worker!
+  removeWorker(id: Int!): Worker!
+}
+
+input CreateWorkerInput {
+  """Example field (placeholder)"""
+  exampleField: Int!
+}
+
+input UpdateWorkerInput {
+  """Example field (placeholder)"""
+  exampleField: Int
+  id: Int!
+}

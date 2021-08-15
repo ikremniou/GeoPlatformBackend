@@ -7,9 +7,23 @@ import { ClaimsModule } from './claims/claims.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt/jwt.guard';
 import { PolicyModule } from './auth/policy/policy.module';
+import { InviteModule } from './invite/invite.module';
+import { WorkerModule } from './worker/worker.module';
+import { GraphQLModule } from '@nestjs/graphql';
+import { graphqlModuleConfig } from './misc/config/graphql.config';
 
 @Module({
-  imports: [TypeOrmModule.forRoot(), UsersModule, AuthModule, RolesModule, ClaimsModule, PolicyModule],
+  imports: [
+    GraphQLModule.forRoot(graphqlModuleConfig),
+    TypeOrmModule.forRoot(),
+    UsersModule,
+    AuthModule,
+    RolesModule,
+    ClaimsModule,
+    PolicyModule,
+    InviteModule,
+    WorkerModule,
+  ],
   controllers: [],
   providers: [
     {

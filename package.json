@@ -23,17 +23,21 @@
     "seed:revert": "typeorm migration:revert -c seed"
   },
   "dependencies": {
+    "@apollo/gateway": "^0.38.0",
     "@casl/ability": "^5.3.1",
     "@nestjs/common": "^7.6.15",
     "@nestjs/core": "^7.6.15",
+    "@nestjs/graphql": "^8.0.2",
     "@nestjs/jwt": "^7.2.0",
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.6.15",
     "@nestjs/swagger": "^4.8.0",
     "@nestjs/typeorm": "^7.1.5",
+    "apollo-server-express": "^2.25.2",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
     "class-validator": "^0.13.1",
+    "graphql": "^15.5.1",
     "mysql2": "^2.2.5",
     "passport": "^0.4.1",
     "passport-jwt": "^4.0.0",
@@ -42,6 +46,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.6",
     "swagger-ui-express": "^4.1.6",
+    "ts-morph": "^11.0.3",
     "typeorm": "^0.2.32"
   },
   "devDependencies": {

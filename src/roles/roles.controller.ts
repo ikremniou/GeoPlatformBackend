@@ -14,7 +14,7 @@ import { RolesService } from './roles.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { ApiTags } from '@nestjs/swagger';
-import { ApiCustomAuth } from 'src/utils/decorators/api-auth.decorator';
+import { ApiCustomAuth } from 'src/misc/decorators/api-auth.decorator';
 import { UserPolicyGuard } from 'src/auth/policy/user-policy.guard';
 import { UserPolicy } from 'src/auth/policy/user-policy.decorator';
 import { AbilityActions } from 'src/auth/policy/user-ability.factory';
