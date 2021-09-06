@@ -2,7 +2,7 @@ import { ExecutionContext, Injectable } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlContextType, GqlExecutionContext } from '@nestjs/graphql';
 import { AuthGuard } from '@nestjs/passport';
-import { IsPublicPathKey } from 'src/misc/decorators/public-path.decorator';
+import { IsPublicRouteKey } from 'src/misc/decorators/public-path.decorator';
 
 @Injectable()
 export class JwtAuthGuard extends AuthGuard('jwt') {
@@ -11,7 +11,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   public canActivate(context: ExecutionContext) {
-    const isPublic = this._reflector.getAllAndOverride(IsPublicPathKey, [context.getHandler(), context.getClass()]);
+    const isPublic = this._reflector.getAllAndOverride(IsPublicRouteKey, [context.getHandler(), context.getClass()]);
     if (isPublic) {
       return true;
     }

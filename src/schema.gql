@@ -3,11 +3,14 @@
 # ------------------------------------------------------
 
 type Worker {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  id: Int!
+  firstName: String!
+  lastName: String!
+  middleName: String!
 }
 
 type Query {
+  workers: [Worker!]!
   worker(id: Int!): Worker!
 }
 
@@ -18,12 +21,14 @@ type Mutation {
 }
 
 input CreateWorkerInput {
-  """Example field (placeholder)"""
-  exampleField: Int!
+  firstName: String!
+  middleName: String!
+  lastName: String!
 }
 
 input UpdateWorkerInput {
-  """Example field (placeholder)"""
-  exampleField: Int
+  firstName: String
+  middleName: String
+  lastName: String
   id: Int!
 }

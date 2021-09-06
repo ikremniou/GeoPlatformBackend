@@ -1,17 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { DeleteResult, Repository } from 'typeorm';
+import { Injectable } from '@nestjs/common';
 import { CreateInviteDto } from './dto/create-invite.dto';
 import { UpdateInviteDto } from './dto/update-invite.dto';
 import { Invite } from './entities/invite.entity';
 
 @Injectable()
 export class InviteService {
-  constructor(
-      // @InjectRepository(Worker) private readonly _workerRepository: Repository<Worker>,
-      @InjectRepository(Invite) private readonly _inviteRepository: Repository<Invite>
-      ){}
-
   public async create(createInviteDto: CreateInviteDto): Promise<Invite> {
     // const worker = await this._workerRepository.findOne(createInviteDto.workerId);
     // if (!worker) {
@@ -36,7 +29,7 @@ export class InviteService {
     throw `This action updates a #${id} invite`;
   }
 
-  public remove(id: number): Promise<DeleteResult> {
+  public remove(id: number): Promise<Invite > {
     throw `This action removes a #${id} invite`;
   }
 }

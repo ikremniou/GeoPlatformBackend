@@ -1,0 +1,49 @@
+datasource db {
+    url = "mysql://root@localhost:3306/geo-platform"
+    provider = "mysql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum UserStatus {
+    active
+    blocked
+}
+
+model Claim {
+    id Int @id @default(autoincrement())
+    action String
+    subject String
+    condition String
+    roles Role[]
+}
+
+model Role {
+    id Int @id @default(autoincrement())
+    name String @unique
+    claims Claim[]
+    users User[]
+}
+
+model User {
+    id Int @id @default(autoincrement())
+    username String @unique
+    email String @unique
+    status UserStatus @default(active)
+    password String
+    role Role? @relation(fields: [roleId], references: [id])
+    roleId Int?
+}
+
+model Invite {
+    id String @id @default(uuid())
+}
+
+model Worker {
+    id Int @id @default(autoincrement())
+    firstName String
+    middleName String
+    lastName String
+}

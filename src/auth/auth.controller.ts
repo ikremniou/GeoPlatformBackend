@@ -1,6 +1,6 @@
 import { Controller, Post, Request, UseGuards } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
-import { PublicPath } from 'src/misc/decorators/public-path.decorator';
+import { PublicRoute } from 'src/misc/decorators/public-path.decorator';
 import { AuthService } from './auth.service';
 import { LocalAuthGuard } from './local/local-auth.guard';
 import { RequestWithUser } from './request-with-user';
@@ -10,7 +10,7 @@ import { RequestWithUser } from './request-with-user';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @PublicPath()
+  @PublicRoute()
   @Post('local')
   @UseGuards(LocalAuthGuard)
   public authLocal(@Request() request: RequestWithUser) {

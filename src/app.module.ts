@@ -1,5 +1,4 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module';
 import { RolesModule } from './roles/roles.module';
@@ -11,11 +10,11 @@ import { InviteModule } from './invite/invite.module';
 import { WorkerModule } from './worker/worker.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { graphqlModuleConfig } from './misc/config/graphql.config';
+import { DataModule } from './data/data.module';
 
 @Module({
   imports: [
     GraphQLModule.forRoot(graphqlModuleConfig),
-    TypeOrmModule.forRoot(),
     UsersModule,
     AuthModule,
     RolesModule,
@@ -23,6 +22,7 @@ import { graphqlModuleConfig } from './misc/config/graphql.config';
     PolicyModule,
     InviteModule,
     WorkerModule,
+    DataModule,
   ],
   controllers: [],
   providers: [

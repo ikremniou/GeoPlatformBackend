@@ -20,7 +20,11 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "seed:run": "typeorm migration:run -c seed",
-    "seed:revert": "typeorm migration:revert -c seed"
+    "seed:revert": "typeorm migration:revert -c seed",
+    "prisma:g": "prisma generate",
+    "prisma:p": "prisma db push",
+    "prisma:s": "ts-node ./prisma/seed-create.ts",
+    "prisma:d": "ts-node ./prisma/seed-drop.ts"
   },
   "dependencies": {
     "@apollo/gateway": "^0.38.0",
@@ -32,7 +36,7 @@
     "@nestjs/passport": "^7.1.5",
     "@nestjs/platform-express": "^7.6.15",
     "@nestjs/swagger": "^4.8.0",
-    "@nestjs/typeorm": "^7.1.5",
+    "@prisma/client": "^2.30.3",
     "apollo-server-express": "^2.25.2",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
@@ -46,8 +50,7 @@
     "rimraf": "^3.0.2",
     "rxjs": "^6.6.6",
     "swagger-ui-express": "^4.1.6",
-    "ts-morph": "^11.0.3",
-    "typeorm": "^0.2.32"
+    "ts-morph": "^11.0.3"
   },
   "devDependencies": {
     "@nestjs/cli": "^7.6.0",
@@ -66,6 +69,7 @@
     "eslint-plugin-prettier": "^3.3.1",
     "jest": "^26.6.3",
     "prettier": "^2.2.1",
+    "prisma": "^2.30.3",
     "supertest": "^6.1.3",
     "ts-jest": "^26.5.4",
     "ts-loader": "^8.0.18",

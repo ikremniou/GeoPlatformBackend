@@ -13,7 +13,6 @@ import { UsersService } from './users.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
-import { DeleteResult, UpdateResult } from 'typeorm';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiCustomAuth } from 'src/misc/decorators/api-auth.decorator';
 import { UseGuards } from '@nestjs/common';
@@ -52,14 +51,14 @@ export class UsersController {
   @Patch(':id')
   @UseGuards(UserPolicyGuard)
   @UserPolicy((ability) => ability.can(AbilityActions.Update, User))
-  public update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<UpdateResult> {
+  public update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto): Promise<User> {
     return this.usersService.update(+id, updateUserDto);
   }
 
   @Delete(':id')
   @UseGuards(UserPolicyGuard)
   @UserPolicy((ability) => ability.can(AbilityActions.Delete, User))
-  public remove(@Param('id') id: string): Promise<DeleteResult> {
+  public remove(@Param('id') id: string): Promise<User> {
     return this.usersService.remove(+id);
   }
 }
