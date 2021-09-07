@@ -3,30 +3,36 @@ import { Worker } from './entities/worker.entity';
 import { CreateWorkerInput } from './dto/create-worker.input';
 import { UpdateWorkerInput } from './dto/update-worker.input';
 import { PrismaService } from 'src/data/prisma.service';
+import { plainToClass } from 'class-transformer';
 
 @Injectable()
 export class WorkerService {
   constructor(private readonly _workersRepository: PrismaService) {}
   public async create(createWorkerInput: CreateWorkerInput): Promise<Worker> {
-    return this._workersRepository.worker.create({ data: createWorkerInput });
+    const createdWorker = await this._workersRepository.worker.create({ data: createWorkerInput });
+    return plainToClass(Worker, createdWorker)
   }
 
   public async findAll(): Promise<Worker[]> {
-    return this._workersRepository.worker.findMany();
+    const workers = await this._workersRepository.worker.findMany();
+    return plainToClass(Worker, workers);
   }
 
   public async findOne(id: number): Promise<Worker> {
     if (!id) {
       return undefined;
     }
-    return this._workersRepository.worker.findUnique({where: { id }});
+    const worker = await this._workersRepository.worker.findUnique({where: { id }});
+    return plainToClass(Worker, worker);
   }
 
   public async update(id: number, updateWorkerInput: UpdateWorkerInput): Promise<Worker> {
-    return this._workersRepository.worker.update({ where: { id }, data: updateWorkerInput});
+    const updatedWorker = await this._workersRepository.worker.update({ where: { id }, data: updateWorkerInput});
+    return plainToClass(Worker, updatedWorker);
   }
 
   public async remove(id: number): Promise<Worker> {
-    return this._workersRepository.worker.delete({ where: { id }});
+    const removedWorker = await this._workersRepository.worker.delete({ where: { id }});
+    return plainToClass(Worker, removedWorker)
   }
 }

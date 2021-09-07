@@ -1,4 +1,5 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { plainToClass } from 'class-transformer';
 import { PrismaService } from 'src/data/prisma.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
@@ -21,7 +22,7 @@ export class RolesService {
       return { id: claimId };
     });
 
-    return this._prisma.role.create({
+    const createdRole = await this._prisma.role.create({
       data: {
         name: createRoleDto.name,
         users: {
@@ -32,10 +33,13 @@ export class RolesService {
         },
       },
     });
+
+    return plainToClass(Role, createdRole);
   }
 
-  public findAll(): Promise<Role[]> {
-    return this._prisma.role.findMany();
+  public async findAll(): Promise<Role[]> {
+    const allRoles = await this._prisma.role.findMany();
+    return plainToClass(Role, allRoles);
   }
 
   public async findOne(id: number): Promise<Role> {
@@ -43,7 +47,8 @@ export class RolesService {
       return undefined;
     }
 
-    return this._prisma.role.findUnique({ where: { id } });
+    const role = await this._prisma.role.findUnique({ where: { id } });
+    return plainToClass(Role, role);
   }
 
   public async update(id: number, updateRoleDto: UpdateRoleDto): Promise<Role> {
@@ -59,7 +64,7 @@ export class RolesService {
       return { id: claimId };
     });
 
-    return this._prisma.role.update({ where: {id}, data: {
+    const updatedRole = await this._prisma.role.update({ where: {id}, data: {
       name: updateRoleDto.name,
       claims: {
         connect: claims
@@ -68,9 +73,12 @@ export class RolesService {
         connect: users
       }
     }});
+
+    return plainToClass(Role, updatedRole);
   }
 
-  public remove(id: number): Promise<Role> {
-    return this._prisma.role.delete({where: { id }});
+  public async remove(id: number): Promise<Role> {
+    const removedRole = await this._prisma.role.delete({where: { id }});
+    return plainToClass(Role, removedRole);
   }
 }

@@ -10,16 +10,10 @@ export type UserStatus = (typeof UserStatus)[keyof typeof UserStatus]
 
 export class User {
   public readonly id: number;
-
   public readonly username: string;
-
   public email: string;
-
   public status: UserStatus;
-
   @Exclude()
   public password: string;
-
   public role?: Role;
 }
-

@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
-import { classToClass, plainToClass } from 'class-transformer';
+import { plainToClass } from 'class-transformer';
 import { PrismaService } from 'src/data/prisma.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -19,7 +19,8 @@ export class UsersService {
     }
 
     createUserDto.password = await bcrypt.hash(createUserDto.password, createUserDto.username.length);
-    return this._prismaClient.user.create({ data: createUserDto });
+    const createdUser = this._prismaClient.user.create({ data: createUserDto });
+    return plainToClass(User, createdUser);
   }
 
   public async findAll(): Promise<User[]> {
@@ -32,18 +33,22 @@ export class UsersService {
       return undefined;
     }
 
-    return this._prismaClient.user.findUnique({ where: { id } });
+    const user = await this._prismaClient.user.findUnique({ where: { id } });
+    return plainToClass(User, user);
   }
 
-  public getUserWillRoles(username: string): Promise<User> {
-    return this._prismaClient.user.findUnique({ where: { username }, include: { role: true } });
+  public async getUserWillRoles(username: string): Promise<User> {
+     const user = await this._prismaClient.user.findUnique({ where: { username }, include: { role: true } });
+     return plainToClass(User, user);
   }
 
-  public update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
-    return this._prismaClient.user.update({ where: { id }, data: updateUserDto });
+  public async update(id: number, updateUserDto: UpdateUserDto): Promise<User> {
+    const updatedUser = await this._prismaClient.user.update({ where: { id }, data: updateUserDto });
+    return plainToClass(User, updatedUser);
   }
 
-  public remove(id: number): Promise<User> {
-    return this._prismaClient.user.delete({ where: { id } });
+  public async remove(id: number): Promise<User> {
+    const deletedUser = await this._prismaClient.user.delete({ where: { id } });
+    return plainToClass(User, deletedUser);
   }
 }

@@ -47,3 +47,18 @@ model Worker {
     middleName String
     lastName String
 }
+
+model Project {
+    id Int @id @default(autoincrement())
+    summary String
+}
+
+model Activity {
+    id Int @id @default(autoincrement())
+    summary String
+    description String
+}
+
+model TimeReport {
+    id DateTime @id @default(now())
+}
