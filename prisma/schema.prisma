@@ -62,3 +62,7 @@ model Activity {
 model TimeReport {
     id DateTime @id @default(now())
 }
+
+model MonthlyTimeReview {
+    id Int @id @default(autoincrement())
+}
