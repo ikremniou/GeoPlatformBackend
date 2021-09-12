@@ -9,15 +9,62 @@ type Worker {
   middleName: String!
 }
 
+type Project {
+  """Example field (placeholder)"""
+  summary: String!
+}
+
+type Activity {
+  """Example field (placeholder)"""
+  summary: String!
+  description: String!
+}
+
+type TimeReport {
+  """Example field (placeholder)"""
+  id: DateTime!
+  comment: String
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type MonthlyTimeReview {
+  """Example field (placeholder)"""
+  field: String!
+}
+
 type Query {
   workers: [Worker!]!
   worker(id: Int!): Worker!
+  projects: [Project!]!
+  project(id: Int!): Project!
+  activities: [Activity!]!
+  activity(id: Int!): Activity!
+  timeReports: [TimeReport!]!
+  timeReport(id: String!): TimeReport!
+  monthlyTimeReviews: [MonthlyTimeReview!]!
+  monthlyTimeReview(id: Int!): MonthlyTimeReview!
 }
 
 type Mutation {
   createWorker(createWorkerInput: CreateWorkerInput!): Worker!
   updateWorker(updateWorkerInput: UpdateWorkerInput!): Worker!
   removeWorker(id: Int!): Worker!
+  createProject(createProjectInput: CreateProjectInput!): Project!
+  updateProject(updateProjectInput: UpdateProjectInput!): Project!
+  removeProject(id: Int!): Project!
+  createActivity(createActivityInput: CreateActivityInput!): Activity!
+  updateActivity(updateActivityInput: UpdateActivityInput!): Activity!
+  removeActivity(id: Int!): Activity!
+  createTimeReport(createTimeReportInput: CreateTimeReportInput!): TimeReport!
+  updateTimeReport(updateTimeReportInput: UpdateTimeReportInput!): TimeReport!
+  removeTimeReport(id: String!): TimeReport!
+  createMonthlyTimeReview(createMonthlyTimeReviewInput: CreateMonthlyTimeReviewInput!): MonthlyTimeReview!
+  updateMonthlyTimeReview(updateMonthlyTimeReviewInput: UpdateMonthlyTimeReviewInput!): MonthlyTimeReview!
+  removeMonthlyTimeReview(id: Int!): MonthlyTimeReview!
 }
 
 input CreateWorkerInput {
@@ -30,5 +77,49 @@ input UpdateWorkerInput {
   firstName: String
   middleName: String
   lastName: String
+  id: Int!
+}
+
+input CreateProjectInput {
+  """Example field (placeholder)"""
+  summary: String!
+}
+
+input UpdateProjectInput {
+  """Example field (placeholder)"""
+  summary: String
+  id: Int!
+}
+
+input CreateActivityInput {
+  """Example field (placeholder)"""
+  summary: String!
+  description: String!
+}
+
+input UpdateActivityInput {
+  """Example field (placeholder)"""
+  summary: String
+  description: String
+  id: Int!
+}
+
+input CreateTimeReportInput {
+  comment: String
+}
+
+input UpdateTimeReportInput {
+  comment: String
+  id: String!
+}
+
+input CreateMonthlyTimeReviewInput {
+  """Example field (placeholder)"""
+  field: String!
+}
+
+input UpdateMonthlyTimeReviewInput {
+  """Example field (placeholder)"""
+  field: String
   id: Int!
 }

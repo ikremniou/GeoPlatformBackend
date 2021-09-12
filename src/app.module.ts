@@ -11,11 +11,9 @@ import { WorkerModule } from './worker/worker.module';
 import { GraphQLModule } from '@nestjs/graphql';
 import { graphqlModuleConfig } from './misc/config/graphql.config';
 import { DataModule } from './data/data.module';
-import { ProjectResolver } from './project/project.resolver';
 import { ProjectModule } from './project/project.module';
 import { ActivityModule } from './activity/activity.module';
 import { TimeReportModule } from './time-report/time-report.module';
-import { MonthlyTimeReviewModule } from './monthly-time-review/monthly-time-review.module';
 import { MonthlyTimeReviewModule } from './monthly-time-review/monthly-time-review.module';
 
 @Module({
@@ -39,8 +37,7 @@ import { MonthlyTimeReviewModule } from './monthly-time-review/monthly-time-revi
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    },
-    ProjectResolver,
+    }
   ],
 })
 export class AppModule {}

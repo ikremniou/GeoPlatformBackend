@@ -3,33 +3,35 @@ import { ProjectService } from './project.service';
 import { Project } from './entities/project.entity';
 import { CreateProjectInput } from './dto/create-project.input';
 import { UpdateProjectInput } from './dto/update-project.input';
+import { PublicRoute } from 'src/misc/decorators/public-path.decorator';
 
+@PublicRoute()
 @Resolver(() => Project)
 export class ProjectResolver {
   constructor(private readonly projectService: ProjectService) {}
 
   @Mutation(() => Project)
-  createProject(@Args('createProjectInput') createProjectInput: CreateProjectInput) {
+  public createProject(@Args('createProjectInput') createProjectInput: CreateProjectInput): Promise<Project> {
     return this.projectService.create(createProjectInput);
   }
 
-  @Query(() => [Project], { name: 'project' })
-  findAll() {
+  @Query(() => [Project], { name: 'projects' })
+  public findAll(): Promise<Project[]> {
     return this.projectService.findAll();
   }
 
   @Query(() => Project, { name: 'project' })
-  findOne(@Args('id', { type: () => Int }) id: number) {
+  public findOne(@Args('id', { type: () => Int }) id: number): Promise<Project> {
     return this.projectService.findOne(id);
   }
 
   @Mutation(() => Project)
-  updateProject(@Args('updateProjectInput') updateProjectInput: UpdateProjectInput) {
+  public updateProject(@Args('updateProjectInput') updateProjectInput: UpdateProjectInput): Promise<Project> {
     return this.projectService.update(updateProjectInput.id, updateProjectInput);
   }
 
   @Mutation(() => Project)
-  removeProject(@Args('id', { type: () => Int }) id: number) {
+  public removeProject(@Args('id', { type: () => Int }) id: number): Promise<Project> {
     return this.projectService.remove(id);
   }
 }

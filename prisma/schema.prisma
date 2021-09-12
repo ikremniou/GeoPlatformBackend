@@ -1,10 +1,10 @@
 datasource db {
-    url = "mysql://root@localhost:3306/geo-platform"
+    url      = "mysql://root@localhost:3306/geo-platform"
     provider = "mysql"
 }
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 enum UserStatus {
@@ -13,28 +13,28 @@ enum UserStatus {
 }
 
 model Claim {
-    id Int @id @default(autoincrement())
-    action String
-    subject String
+    id        Int    @id @default(autoincrement())
+    action    String
+    subject   String
     condition String
-    roles Role[]
+    roles     Role[]
 }
 
 model Role {
-    id Int @id @default(autoincrement())
-    name String @unique
+    id     Int     @id @default(autoincrement())
+    name   String  @unique
     claims Claim[]
-    users User[]
+    users  User[]
 }
 
 model User {
-    id Int @id @default(autoincrement())
-    username String @unique
-    email String @unique
-    status UserStatus @default(active)
+    id       Int        @id @default(autoincrement())
+    username String     @unique
+    email    String     @unique
+    status   UserStatus @default(active)
     password String
-    role Role? @relation(fields: [roleId], references: [id])
-    roleId Int?
+    role     Role?      @relation(fields: [roleId], references: [id])
+    roleId   Int?
 }
 
 model Invite {
@@ -42,27 +42,29 @@ model Invite {
 }
 
 model Worker {
-    id Int @id @default(autoincrement())
-    firstName String
+    id         Int    @id @default(autoincrement())
+    firstName  String
     middleName String
-    lastName String
+    lastName   String
 }
 
 model Project {
-    id Int @id @default(autoincrement())
+    id      Int    @id @default(autoincrement())
     summary String
 }
 
 model Activity {
-    id Int @id @default(autoincrement())
-    summary String
+    id          Int    @id @default(autoincrement())
+    summary     String
     description String
 }
 
 model TimeReport {
-    id DateTime @id @default(now())
+    id      DateTime @id @default(now())
+    comment String?
 }
 
 model MonthlyTimeReview {
-    id Int @id @default(autoincrement())
+    id    Int    @id @default(autoincrement())
+    field String
 }
