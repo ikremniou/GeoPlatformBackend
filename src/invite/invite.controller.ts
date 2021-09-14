@@ -29,16 +29,16 @@ export class InviteController {
 
   @Get(':id')
   public findOne(@Param('id') id: string) {
-    return this.inviteService.findOne(+id);
+    return this.inviteService.findOne(id);
   }
 
   @Patch(':id')
   public update(@Param('id') id: string, @Body() updateInviteDto: UpdateInviteDto) {
-    return this.inviteService.update(+id, updateInviteDto);
+    return this.inviteService.update(id, updateInviteDto);
   }
 
   @Delete(':id')
   public remove(@Param('id') id: string) {
-    return this.inviteService.remove(+id);
+    return this.inviteService.remove(id);
   }
 }

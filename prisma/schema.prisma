@@ -37,15 +37,18 @@ model User {
     roleId   Int?
 }
 
-model Invite {
-    id String @id @default(uuid())
-}
-
 model Worker {
     id         Int    @id @default(autoincrement())
     firstName  String
     middleName String
     lastName   String
+    invitation Invite?
+}
+
+model Invite {
+    id String @id @default(uuid())
+    worker Worker @relation(fields: [workerId], references: [id])
+    workerId Int
 }
 
 model Project {

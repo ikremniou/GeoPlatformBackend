@@ -1,3 +1,3 @@
 export class CreateInviteDto {
-    workerId: string;
+    workerId: number;
 }
