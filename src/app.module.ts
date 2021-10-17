@@ -15,6 +15,7 @@ import { ProjectModule } from './project/project.module';
 import { ActivityModule } from './activity/activity.module';
 import { TimeReportModule } from './time-report/time-report.module';
 import { MonthlyTimeReviewModule } from './monthly-time-review/monthly-time-review.module';
+import { LocaleModule } from './misc/locale/locale.module';
 
 @Module({
   imports: [
@@ -31,13 +32,14 @@ import { MonthlyTimeReviewModule } from './monthly-time-review/monthly-time-revi
     ActivityModule,
     TimeReportModule,
     MonthlyTimeReviewModule,
+    LocaleModule,
   ],
   controllers: [],
   providers: [
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
-    }
+    },
   ],
 })
 export class AppModule {}

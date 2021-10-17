@@ -22,7 +22,7 @@ import { Claim } from './entities/claim.entity';
 
 @ApiCustomAuth()
 @ApiTags('Claims')
-@Controller('claims')
+@Controller('api/claims')
 @UseInterceptors(ClassSerializerInterceptor)
 export class ClaimsController {
   constructor(private readonly claimsService: ClaimsService) {}

@@ -13,7 +13,7 @@ export class User {
   public readonly username: string;
   public email: string;
   public status: UserStatus;
-  @Exclude()
+  @Exclude({ toPlainOnly: true })
   public password: string;
   public role?: Role;
 }

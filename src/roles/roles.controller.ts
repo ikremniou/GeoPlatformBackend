@@ -22,7 +22,7 @@ import { Role } from './entities/role.entity';
 
 @ApiCustomAuth()
 @ApiTags('Roles')
-@Controller('roles')
+@Controller('api/roles')
 @UseInterceptors(ClassSerializerInterceptor)
 export class RolesController {
   constructor(private readonly rolesService: RolesService) {}

@@ -11,7 +11,7 @@ import { Invite } from './entities/invite.entity';
 
 @ApiCustomAuth()
 @ApiTags('Invite')
-@Controller('invite')
+@Controller('api/invite')
 export class InviteController {
   constructor(private readonly inviteService: InviteService) {}
 
