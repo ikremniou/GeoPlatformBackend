@@ -13,7 +13,7 @@ export class UserPolicyGuard implements CanActivate {
 
     if (userPolicies) {
       const user: JwtUserInfo = context.switchToHttp().getRequest().user;
-      const ability = await this._abilityFactory.abilityFromUser(user);
+      const ability = await this._abilityFactory.abilityFromRoleId(user.roleId);
       return userPolicies.every((policy) => policy(ability));
     }
     return true;

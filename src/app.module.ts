@@ -16,6 +16,7 @@ import { ActivityModule } from './activity/activity.module';
 import { TimeReportModule } from './time-report/time-report.module';
 import { MonthlyTimeReviewModule } from './monthly-time-review/monthly-time-review.module';
 import { LocaleModule } from './misc/locale/locale.module';
+import { ValidationModule } from './misc/validation/validation.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { LocaleModule } from './misc/locale/locale.module';
     TimeReportModule,
     MonthlyTimeReviewModule,
     LocaleModule,
+    ValidationModule,
   ],
   controllers: [],
   providers: [

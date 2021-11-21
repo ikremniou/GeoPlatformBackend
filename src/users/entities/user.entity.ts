@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
 import { Role } from 'src/roles/entities/role.entity';
+import { Worker } from 'src/worker/entities/worker.entity';
 
 export const UserStatus = {
   active: 'active',
@@ -16,4 +17,5 @@ export class User {
   @Exclude({ toPlainOnly: true })
   public password: string;
   public role?: Role;
+  public worker?: Worker;
 }

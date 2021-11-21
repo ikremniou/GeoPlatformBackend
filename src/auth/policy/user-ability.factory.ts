@@ -5,7 +5,6 @@ import { Invite } from 'src/invite/entities/invite.entity';
 import { Role } from 'src/roles/entities/role.entity';
 import { RolesService } from 'src/roles/roles.service';
 import { User } from 'src/users/entities/user.entity';
-import { JwtUserInfo } from '../jwt/jwt-user-info';
 
 export enum AbilityActions {
   Manage = 'manage',
@@ -23,20 +22,44 @@ export type AppAbility = Ability<[AbilityActions, AbilitySubjects]>;
 export class UserAbilityFactory {
   constructor(private readonly _roleService: RolesService) {}
 
-  public async abilityFromUser(userInfo: JwtUserInfo): Promise<AppAbility> {
+  public async abilityFromRoleId(userRoleId: number): Promise<AppAbility> {
     const builder = new AbilityBuilder(Ability as AbilityClass<AppAbility>);
-    const userRole = await this._roleService.findOne(userInfo.roleId);
+    const userRole = await this._roleService.findRoleWithClaims(userRoleId);
 
     if (userRole) {
       if (userRole.name == 'Admin') {
         builder.can(AbilityActions.Manage, 'all');
         return this.buildAbility(builder);
       }
-      // load permissions from database based on the user role
+
+      for (const platformClaim of userRole.claims) {
+        builder.can(
+          platformClaim.action as AbilityActions,
+          platformClaim.subject as ExtractSubjectType<AbilitySubjects>,
+        );
+      }
     }
 
     // set default permissions???
     return this.buildAbility(builder);
+  }
+
+  public async getUserAbilities(user: User): Promise<Partial<Claim>[]> {
+    if (!user.role) {
+      return [];
+    }
+
+    if (user.role.name === 'Admin') {
+      return [
+        {
+          action: AbilityActions.Manage,
+          subject: 'all',
+        },
+      ];
+    }
+
+    const userRoleWithClaims = await this._roleService.findRoleWithClaims(user.role.id);
+    return userRoleWithClaims.claims;
   }
 
   public buildAbility(builder: AbilityBuilder<AppAbility>): AppAbility {

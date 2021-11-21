@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { useContainer } from 'class-validator';
 import { AppModule } from './app.module';
 import { oauthSchemeConfig } from './misc/config/oauth.config';
 
@@ -19,7 +20,7 @@ async function bootstrap() {
   initializeSwaggerModule(app);
   app.useGlobalPipes(new ValidationPipe());
   app.enableCors({ origin: ['http://localhost:4200'] });
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
   await app.listen(3000);
 }
 bootstrap();
-

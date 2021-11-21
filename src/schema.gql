@@ -37,7 +37,7 @@ type MonthlyTimeReview {
 }
 
 type Query {
-  workers: [Worker!]!
+  workers(take: Int, skip: Int, filter: WorkerFilterInput): [Worker!]!
   worker(id: Int!): Worker!
   projects: [Project!]!
   project(id: Int!): Project!
@@ -47,6 +47,16 @@ type Query {
   timeReport(id: String!): TimeReport!
   monthlyTimeReviews: [MonthlyTimeReview!]!
   monthlyTimeReview(id: Int!): MonthlyTimeReview!
+}
+
+input WorkerFilterInput {
+  lastName: ContainsInput
+  firstName: ContainsInput
+  middleName: ContainsInput
+}
+
+input ContainsInput {
+  contains: String!
 }
 
 type Mutation {

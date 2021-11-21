@@ -4,17 +4,22 @@ import { CreateWorkerInput } from './dto/create-worker.input';
 import { UpdateWorkerInput } from './dto/update-worker.input';
 import { PrismaService } from 'src/data/prisma.service';
 import { plainToClass } from 'class-transformer';
+import { WorkerFilterInput } from './dto/worker-filter-input';
 
 @Injectable()
 export class WorkerService {
   constructor(private readonly _workersRepository: PrismaService) {}
   public async create(createWorkerInput: CreateWorkerInput): Promise<Worker> {
     const createdWorker = await this._workersRepository.worker.create({ data: createWorkerInput });
-    return plainToClass(Worker, createdWorker)
+    return plainToClass(Worker, createdWorker);
   }
 
-  public async findAll(): Promise<Worker[]> {
-    const workers = await this._workersRepository.worker.findMany();
+  public async findAll(filter: WorkerFilterInput, skip: number, take: number): Promise<Worker[]> {
+    const workers = await this._workersRepository.worker.findMany({
+      where: filter,
+      skip,
+      take,
+    });
     return plainToClass(Worker, workers);
   }
 
@@ -22,17 +27,17 @@ export class WorkerService {
     if (!id) {
       return undefined;
     }
-    const worker = await this._workersRepository.worker.findUnique({where: { id }});
+    const worker = await this._workersRepository.worker.findUnique({ where: { id } });
     return plainToClass(Worker, worker);
   }
 
   public async update(id: number, updateWorkerInput: UpdateWorkerInput): Promise<Worker> {
-    const updatedWorker = await this._workersRepository.worker.update({ where: { id }, data: updateWorkerInput});
+    const updatedWorker = await this._workersRepository.worker.update({ where: { id }, data: updateWorkerInput });
     return plainToClass(Worker, updatedWorker);
   }
 
   public async remove(id: number): Promise<Worker> {
-    const removedWorker = await this._workersRepository.worker.delete({ where: { id }});
-    return plainToClass(Worker, removedWorker)
+    const removedWorker = await this._workersRepository.worker.delete({ where: { id } });
+    return plainToClass(Worker, removedWorker);
   }
 }

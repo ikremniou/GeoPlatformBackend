@@ -8,10 +8,11 @@ import { AuthService } from './auth.service';
 import { authConstants } from './constants';
 import { JwtStrategy } from './jwt/jwt.strategy';
 import { LocalStrategy } from './local/local.strategy';
+import { PolicyModule } from './policy/policy.module';
 
 @Module({
-  imports: [UsersModule, RolesModule, JwtModule.register(authConstants.jwt), LocaleModule],
+  imports: [UsersModule, RolesModule, JwtModule.register(authConstants.jwt), LocaleModule, PolicyModule],
   controllers: [AuthController],
   providers: [AuthService, LocalStrategy, JwtStrategy],
 })
-export class AuthModule { }
+export class AuthModule {}
