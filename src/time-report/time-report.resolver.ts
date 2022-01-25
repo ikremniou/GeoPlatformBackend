@@ -1,11 +1,9 @@
-import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 import { TimeReportService } from './time-report.service';
 import { TimeReport } from './entities/time-report.entity';
 import { CreateTimeReportInput } from './dto/create-time-report.input';
 import { UpdateTimeReportInput } from './dto/update-time-report.input';
-import { PublicRoute } from 'src/misc/decorators/public-path.decorator';
 
-@PublicRoute()
 @Resolver(() => TimeReport)
 export class TimeReportResolver {
   constructor(private readonly timeReportService: TimeReportService) {}

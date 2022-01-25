@@ -4,7 +4,7 @@ import { CreateWorkerInput } from './dto/create-worker.input';
 import { UpdateWorkerInput } from './dto/update-worker.input';
 import { PrismaService } from 'src/data/prisma.service';
 import { plainToClass } from 'class-transformer';
-import { WorkerFilterInput } from './dto/worker-filter-input';
+import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class WorkerService {
@@ -14,9 +14,14 @@ export class WorkerService {
     return plainToClass(Worker, createdWorker);
   }
 
-  public async findAll(filter: WorkerFilterInput, skip: number, take: number): Promise<Worker[]> {
+  public async findAll(filter: string, skip: number, take: number): Promise<Worker[]> {
+    let whereFilter: Prisma.WorkerWhereInput;
+    if (filter) {
+      whereFilter = JSON.parse(filter);
+    }
+
     const workers = await this._workersRepository.worker.findMany({
-      where: filter,
+      where: whereFilter,
       skip,
       take,
     });

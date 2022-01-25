@@ -1,10 +1,16 @@
 import { Ability, AbilityBuilder, AbilityClass, ExtractSubjectType, InferSubjects } from '@casl/ability';
 import { Injectable } from '@nestjs/common';
+import { Activity } from 'src/activity/entities/activity.entity';
 import { Claim } from 'src/claims/entities/claim.entity';
 import { Invite } from 'src/invite/entities/invite.entity';
+import { MonthlyTimeReview } from 'src/monthly-time-review/entities/monthly-time-review.entity';
+import { Project } from 'src/project/entities/project.entity';
 import { Role } from 'src/roles/entities/role.entity';
 import { RolesService } from 'src/roles/roles.service';
+import { Worker } from 'src/worker/entities/worker.entity';
 import { User } from 'src/users/entities/user.entity';
+import { WorkerCategory } from 'src/worker-category/entities/worker-category.entity';
+import { WorkerPosition } from 'src/worker-position/entities/worker-position.entity';
 
 export enum AbilityActions {
   Manage = 'manage',
@@ -14,7 +20,20 @@ export enum AbilityActions {
   Delete = 'delete',
 }
 
-type AbilitySubjects = InferSubjects<typeof User | typeof Claim | typeof Role | typeof Invite> | 'all';
+type AbilitySubjects =
+  | InferSubjects<
+      | typeof User
+      | typeof Claim
+      | typeof Role
+      | typeof Invite
+      | typeof Activity
+      | typeof MonthlyTimeReview
+      | typeof Project
+      | typeof Worker
+      | typeof WorkerCategory
+      | typeof WorkerPosition
+    >
+  | 'all';
 
 export type AppAbility = Ability<[AbilityActions, AbilitySubjects]>;
 
@@ -24,7 +43,7 @@ export class UserAbilityFactory {
 
   public async abilityFromRoleId(userRoleId: number): Promise<AppAbility> {
     const builder = new AbilityBuilder(Ability as AbilityClass<AppAbility>);
-    const userRole = await this._roleService.findRoleWithClaims(userRoleId);
+    const userRole = await this._roleService.findOne(userRoleId);
 
     if (userRole) {
       if (userRole.name == 'Admin') {
@@ -58,7 +77,7 @@ export class UserAbilityFactory {
       ];
     }
 
-    const userRoleWithClaims = await this._roleService.findRoleWithClaims(user.role.id);
+    const userRoleWithClaims = await this._roleService.findOne(user.role.id);
     return userRoleWithClaims.claims;
   }
 

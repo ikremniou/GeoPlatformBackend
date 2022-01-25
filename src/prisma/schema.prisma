@@ -13,10 +13,10 @@ enum UserStatus {
 }
 
 model Claim {
-    id        Int    @id @default(autoincrement())
+    id        Int     @id @default(autoincrement())
     action    String
     subject   String
-    condition String
+    condition String?
     roles     Role[]
 }
 
@@ -40,12 +40,39 @@ model User {
 }
 
 model Worker {
-    id         Int     @id @default(autoincrement())
-    firstName  String
-    middleName String
-    lastName   String
+    id          Int       @id @default(autoincrement())
+    firstName   String
+    middleName  String
+    lastName    String
+    birthday    DateTime
+    mobilePhone String?
+    homePhone   String?
+    hiredDate   DateTime
+    firedDate   DateTime?
+    workNorm    Float
+    boostFactor Float     @default(1)
+    updatedAt   DateTime  @updatedAt
+
+    position         WorkerPosition @relation(fields: [workerPositionId], references: [id])
+    category         WorkerCategory @relation(fields: [workerCategoryId], references: [id])
+    workerPositionId Int
+    workerCategoryId Int
+
     invitation Invite?
     user       User?
+}
+
+model WorkerCategory {
+    id     Int      @id @default(autoincrement())
+    name   String   @unique
+    Worker Worker[]
+}
+
+model WorkerPosition {
+    id         Int      @id @default(autoincrement())
+    name       String   @unique
+    baseSalary Decimal
+    Worker     Worker[]
 }
 
 model Invite {

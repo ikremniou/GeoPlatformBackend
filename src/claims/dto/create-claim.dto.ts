@@ -6,7 +6,5 @@ export class CreateClaimDto {
     @ApiProperty()
     public subject: string;
     @ApiProperty()
-    public condition: string;
-    @ApiProperty()
-    public roleIds: number[];
+    public condition?: string;
 }

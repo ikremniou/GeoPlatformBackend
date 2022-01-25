@@ -4,7 +4,5 @@ export class CreateRoleDto {
     @ApiProperty()
     name: string;
     @ApiProperty()
-    users: number[];
-    @ApiProperty()
     claims: number[];
 }

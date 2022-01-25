@@ -21,10 +21,10 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "seed:run": "typeorm migration:run -c seed",
     "seed:revert": "typeorm migration:revert -c seed",
-    "prisma:g": "prisma generate",
-    "prisma:p": "prisma db push",
-    "prisma:s": "ts-node ./prisma/seed-create.ts",
-    "prisma:d": "ts-node ./prisma/seed-drop.ts"
+    "prisma:g": "prisma generate --schema ./src/prisma/schema.prisma",
+    "prisma:p": "prisma db push --schema ./src/prisma/schema.prisma",
+    "prisma:s": "node ./dist/prisma/seed-create.js",
+    "prisma:d": "node ./dist/prisma/seed-drop.js"
   },
   "dependencies": {
     "@apollo/gateway": "^0.43.1",
@@ -36,7 +36,7 @@
     "@nestjs/passport": "^8.0.1",
     "@nestjs/platform-express": "^8.2.0",
     "@nestjs/swagger": "^5.1.4",
-    "@prisma/client": "^3.4.2",
+    "@prisma/client": "^3.8.1",
     "apollo-server-express": "^3.5.0",
     "bcrypt": "^5.0.1",
     "class-transformer": "^0.4.0",
@@ -70,7 +70,7 @@
     "jest": "^27.3.1",
     "jest-mock-extended": "^2.0.4",
     "prettier": "^2.4.1",
-    "prisma": "^3.4.2",
+    "prisma": "^3.8.1",
     "supertest": "^6.1.6",
     "ts-jest": "^27.0.7",
     "ts-loader": "^9.2.6",

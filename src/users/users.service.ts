@@ -25,7 +25,7 @@ export class UsersService {
       where: { id: createUserDto.registerToken },
     });
     if (!invitation) {
-      throw new ServerBusinessError(this._i18nService.get('Users_InvalidInvitation'));
+      throw new ServerBusinessError(this._i18nService.get('User_InvalidInvitation'));
     }
 
     createUserDto.password = await bcrypt.hash(createUserDto.password, createUserDto.username.length);

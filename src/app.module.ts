@@ -17,6 +17,8 @@ import { TimeReportModule } from './time-report/time-report.module';
 import { MonthlyTimeReviewModule } from './monthly-time-review/monthly-time-review.module';
 import { LocaleModule } from './misc/locale/locale.module';
 import { ValidationModule } from './misc/validation/validation.module';
+import { WorkerPositionModule } from './worker-position/worker-position.module';
+import { WorkerCategoryModule } from './worker-category/worker-category.module';
 
 @Module({
   imports: [
@@ -35,6 +37,8 @@ import { ValidationModule } from './misc/validation/validation.module';
     MonthlyTimeReviewModule,
     LocaleModule,
     ValidationModule,
+    WorkerPositionModule,
+    WorkerCategoryModule,
   ],
   controllers: [],
   providers: [

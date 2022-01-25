@@ -12,6 +12,11 @@ export enum messages {
     Validation_Length = 'Длина поля "{0}" должна быть от {1} до {2} символов',
     Validation_NotAscii = 'Поле "{0}" должно иметь только ASCII символы',
     Validation_IsEmail = 'Поле "{0}" должно иметь формат электронной почты',
-    Users_InvalidInvitation = 'Не удалось найти приглашение с таким идентификатором',
-
+    User_InvalidInvitation = 'Не удалось найти приглашение с таким идентификатором',
+    Role_CannotFindEntityById = 'Не удалось найти роль с идентификатором: {0}',
+    Role_NameIsNotUnique = 'Роль с названием "{0}" уже существует',
+    WorkerPosition_NameIsNotUnique = 'Должность с названием "{0}" уже существует',
+    WorkerPosition_InvalidId = 'Должность с идентификатором "{0}" отсутствует в базе данных',
+    WorkerCategory_NameIsNotUnique = 'Категория с названием "{0}" уже существует',
+    WorkerCategory_InvalidId = 'Категория с идентификатором "{0}" отсутствует в базе данных',
 } 

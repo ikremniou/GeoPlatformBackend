@@ -1,23 +1,18 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { plainToClass } from 'class-transformer';
-import { Claim } from 'src/claims/entities/claim.entity';
 import { PrismaService } from 'src/data/prisma.service';
+import { ServerBusinessError } from 'src/misc/error/server-business.error';
+import { I18nService } from 'src/misc/locale/i18n.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdateRoleDto } from './dto/update-role.dto';
 import { Role } from './entities/role.entity';
 
 @Injectable()
 export class RolesService {
-  constructor(private readonly _prisma: PrismaService) {}
+  constructor(private readonly _i18nService: I18nService, private readonly _prisma: PrismaService) {}
 
   public async create(createRoleDto: CreateRoleDto): Promise<Role> {
-    if (await this._prisma.role.findUnique({ where: { name: createRoleDto.name } })) {
-      throw new HttpException('Role with the specified name is already exists', HttpStatus.BAD_REQUEST);
-    }
-
-    const users = createRoleDto.users.map((userId) => {
-      return { id: userId };
-    });
+    await this.validateUniqueName(createRoleDto.name);
 
     const claims = createRoleDto.claims.map((claimId) => {
       return { id: claimId };
@@ -26,28 +21,20 @@ export class RolesService {
     const createdRole = await this._prisma.role.create({
       data: {
         name: createRoleDto.name,
-        users: {
-          connect: users,
-        },
         claims: {
           connect: claims,
         },
       },
+      include: { claims: true },
     });
 
     return plainToClass(Role, createdRole);
   }
 
-  public async findRoleWithClaims(userRoleId: number): Promise<Role> {
-    const role = await this._prisma.role.findUnique({ where: { id: userRoleId }, include: { claims: true } });
-    const classRole = plainToClass(Role, role);
-    classRole.claims = plainToClass(Claim, role.claims);
-    return role;
-  }
-
   public async findAll(): Promise<Role[]> {
-    const allRoles = await this._prisma.role.findMany();
-    return plainToClass(Role, allRoles);
+    const allRoles = await this._prisma.role.findMany({ include: { claims: true } });
+    const classRoles = plainToClass(Role, allRoles);
+    return classRoles;
   }
 
   public async findOne(id: number): Promise<Role> {
@@ -55,17 +42,22 @@ export class RolesService {
       return undefined;
     }
 
-    const role = await this._prisma.role.findUnique({ where: { id } });
+    const role = await this._prisma.role.findUnique({ where: { id }, include: { claims: true } });
     return plainToClass(Role, role);
   }
 
   public async update(id: number, updateRoleDto: UpdateRoleDto): Promise<Role> {
-    const roleToUpdate: Partial<Role> = {};
-    if (updateRoleDto.name) {
-      roleToUpdate.name = updateRoleDto.name;
+    const currentRole = await this._prisma.role.findUnique({ where: { id }, include: { claims: true } });
+    if (!currentRole) {
+      throw new ServerBusinessError(this._i18nService.get('Role_CannotFindEntityById', id));
     }
-    const users = updateRoleDto.users.map((userId) => {
-      return { id: userId };
+
+    if (updateRoleDto.name && currentRole.name !== updateRoleDto.name) {
+      await this.validateUniqueName(updateRoleDto.name);
+    }
+
+    const oldClaims = currentRole.claims.map((claim) => {
+      return { id: claim.id };
     });
 
     const claims = updateRoleDto.claims.map((claimId) => {
@@ -77,12 +69,11 @@ export class RolesService {
       data: {
         name: updateRoleDto.name,
         claims: {
+          disconnect: oldClaims,
           connect: claims,
         },
-        users: {
-          connect: users,
-        },
       },
+      include: { claims: true },
     });
 
     return plainToClass(Role, updatedRole);
@@ -91,5 +82,11 @@ export class RolesService {
   public async remove(id: number): Promise<Role> {
     const removedRole = await this._prisma.role.delete({ where: { id } });
     return plainToClass(Role, removedRole);
+  }
+
+  private async validateUniqueName(name: string) {
+    if (await this._prisma.role.findUnique({ where: { name } })) {
+      throw new ServerBusinessError(this._i18nService.get('Role_NameIsNotUnique', name));
+    }
   }
 }
