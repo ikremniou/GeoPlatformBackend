@@ -46,6 +46,8 @@ export class WorkerPositionService {
 
   public async remove(id: number) {
     await this.validateId(id);
+    const removedUser  = await this._prisma.workerPosition.delete({ where: { id } });
+    return plainToClass(WorkerPosition, removedUser);
   }
 
   private async validateId(id: number) {
