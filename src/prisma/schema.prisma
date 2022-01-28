@@ -65,14 +65,14 @@ model Worker {
 model WorkerCategory {
     id     Int      @id @default(autoincrement())
     name   String   @unique
-    Worker Worker[]
+    worker Worker[]
 }
 
 model WorkerPosition {
     id         Int      @id @default(autoincrement())
     name       String   @unique
     baseSalary Decimal
-    Worker     Worker[]
+    worker     Worker[]
 }
 
 model Invite {

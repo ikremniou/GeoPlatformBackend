@@ -5,31 +5,33 @@ import { WorkerPosition } from 'src/worker-position/entities/worker-position.ent
 @ObjectType()
 export class Worker {
   @Field(() => Int)
-  id: number;
+  id!: number;
   @Field()
-  firstName: string;
+  firstName!: string;
   @Field()
-  lastName: string;
+  lastName!: string;
   @Field()
-  middleName: string;
+  middleName!: string;
   @Field()
-  birthday: Date;
-  @Field()
+  birthday!: Date;
+  @Field({ nullable: true })
   mobilePhone?: string;
-  @Field()
+  @Field({ nullable: true })
   homePhone?: string;
   @Field()
-  hiredDate: Date;
-  @Field()
+  hiredDate!: Date;
+  @Field({ nullable: true })
   firedDate?: Date;
   @Field(() => Float)
-  workNorm: number;
-  @Field(() => Float)
-  boostFactor: number;
+  workNorm!: number;
+  @Field(() => Float, { nullable: true })
+  boostFactor?: number;
   @Field()
-  updatedAt: Date;
+  updatedAt!: Date;
   @Field()
-  position: WorkerPosition;
+  position!: WorkerPosition;
   @Field()
-  category: WorkerCategory;
+  category!: WorkerCategory;
+  workerPositionId: number;
+  workerCategoryId: number;
 }

@@ -19,12 +19,12 @@ type Worker {
   lastName: String!
   middleName: String!
   birthday: DateTime!
-  mobilePhone: String!
-  homePhone: String!
+  mobilePhone: String
+  homePhone: String
   hiredDate: DateTime!
-  firedDate: DateTime!
+  firedDate: DateTime
   workNorm: Float!
-  boostFactor: Float!
+  boostFactor: Float
   updatedAt: DateTime!
   position: WorkerPosition!
   category: WorkerCategory!
@@ -60,6 +60,10 @@ type TimeReport {
 type Query {
   workers(take: Int, skip: Int, filter: String): [Worker!]!
   worker(id: Int!): Worker!
+  workerCategories(take: Int, skip: Int, filter: String): [WorkerCategory!]!
+  workerCategory(id: Int!): WorkerCategory!
+  workerPositions(take: Int, skip: Int, filter: String): [WorkerPosition!]!
+  workerPosition(id: Int!): WorkerPosition!
   projects: [Project!]!
   project(id: Int!): Project!
   activities: [Activity!]!
@@ -68,16 +72,18 @@ type Query {
   timeReport(id: String!): TimeReport!
   monthlyTimeReviews: [MonthlyTimeReview!]!
   monthlyTimeReview(id: Int!): MonthlyTimeReview!
-  workerPositions(take: Int, skip: Int, filter: String): [WorkerPosition!]!
-  workerPosition(id: Int!): WorkerPosition!
-  workerCategories(take: Int, skip: Int, filter: String): [WorkerCategory!]!
-  workerCategory(id: Int!): WorkerCategory!
 }
 
 type Mutation {
   createWorker(createWorkerInput: CreateWorkerInput!): Worker!
   updateWorker(updateWorkerInput: UpdateWorkerInput!): Worker!
   removeWorker(id: Int!): Worker!
+  createWorkerCategory(createWorkerCategoryInput: CreateWorkerCategoryInput!): WorkerCategory!
+  updateWorkerCategory(updateWorkerCategoryInput: UpdateWorkerCategoryInput!): WorkerCategory!
+  removeWorkerCategory(id: Int!): WorkerCategory!
+  createWorkerPosition(createWorkerPositionInput: CreateWorkerPositionInput!): WorkerPosition!
+  updateWorkerPosition(updateWorkerPositionInput: UpdateWorkerPositionInput!): WorkerPosition!
+  removeWorkerPosition(id: Int!): WorkerPosition!
   createProject(createProjectInput: CreateProjectInput!): Project!
   updateProject(updateProjectInput: UpdateProjectInput!): Project!
   removeProject(id: Int!): Project!
@@ -90,12 +96,6 @@ type Mutation {
   createMonthlyTimeReview(createMonthlyTimeReviewInput: CreateMonthlyTimeReviewInput!): MonthlyTimeReview!
   updateMonthlyTimeReview(updateMonthlyTimeReviewInput: UpdateMonthlyTimeReviewInput!): MonthlyTimeReview!
   removeMonthlyTimeReview(id: Int!): MonthlyTimeReview!
-  createWorkerPosition(createWorkerPositionInput: CreateWorkerPositionInput!): WorkerPosition!
-  updateWorkerPosition(updateWorkerPositionInput: UpdateWorkerPositionInput!): WorkerPosition!
-  removeWorkerPosition(id: Int!): WorkerPosition!
-  createWorkerCategory(createWorkerCategoryInput: CreateWorkerCategoryInput!): WorkerCategory!
-  updateWorkerCategory(updateWorkerCategoryInput: UpdateWorkerCategoryInput!): WorkerCategory!
-  removeWorkerCategory(id: Int!): WorkerCategory!
 }
 
 input CreateWorkerInput {
@@ -103,13 +103,12 @@ input CreateWorkerInput {
   middleName: String!
   lastName: String!
   birthday: DateTime!
-  mobilePhone: String!
-  homePhone: String!
+  mobilePhone: String
+  homePhone: String
   hiredDate: DateTime!
-  firedDate: DateTime!
+  firedDate: DateTime
   workNorm: Float!
-  boostFactor: Float!
-  updatedAt: DateTime!
+  boostFactor: Float
   workerPositionId: Int!
   workerCategoryId: Int!
 }
@@ -125,9 +124,28 @@ input UpdateWorkerInput {
   firedDate: DateTime
   workNorm: Float
   boostFactor: Float
-  updatedAt: DateTime
   workerPositionId: Int
   workerCategoryId: Int
+  id: Int!
+}
+
+input CreateWorkerCategoryInput {
+  name: String!
+}
+
+input UpdateWorkerCategoryInput {
+  name: String
+  id: Int!
+}
+
+input CreateWorkerPositionInput {
+  name: String!
+  baseSalary: Float!
+}
+
+input UpdateWorkerPositionInput {
+  name: String
+  baseSalary: Float
   id: Int!
 }
 
@@ -172,25 +190,5 @@ input CreateMonthlyTimeReviewInput {
 input UpdateMonthlyTimeReviewInput {
   """Example field (placeholder)"""
   field: String
-  id: Int!
-}
-
-input CreateWorkerPositionInput {
-  name: String!
-  baseSalary: Float!
-}
-
-input UpdateWorkerPositionInput {
-  name: String
-  baseSalary: Float
-  id: Int!
-}
-
-input CreateWorkerCategoryInput {
-  name: String!
-}
-
-input UpdateWorkerCategoryInput {
-  name: String
   id: Int!
 }

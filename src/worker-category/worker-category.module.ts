@@ -7,6 +7,7 @@ import { PolicyModule } from 'src/auth/policy/policy.module';
 
 @Module({
   imports: [LocaleModule, DataModule, PolicyModule],
-  providers: [WorkerCategoryResolver, WorkerCategoryService]
+  providers: [WorkerCategoryResolver, WorkerCategoryService],
+  exports: [WorkerCategoryService]
 })
 export class WorkerCategoryModule {}
