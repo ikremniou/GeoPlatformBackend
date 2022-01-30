@@ -23,8 +23,16 @@ export class ProjectResolver {
   @Query(() => [Project], { name: 'projects' })
   @UseGuards(UserPolicyGuard)
   @UserPolicy((ability) => ability.can(AbilityActions.Read, Project))
-  public findAll(): Promise<Project[]> {
-    return this.projectService.findAll();
+  public findAll(
+    @Args('filter', { nullable: true }) filter: string,
+    @Args('skip', { nullable: true, type: () => Int }) skip: number,
+    @Args('take', { nullable: true, type: () => Int }) take: number,
+  ): Promise<Project[]> {
+    if (filter) {
+      filter = JSON.parse(filter);
+    }
+
+    return this.projectService.findAll(filter, skip, take);
   }
 
   @Query(() => Project, { name: 'project' })

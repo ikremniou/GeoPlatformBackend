@@ -4,6 +4,7 @@ import { Activity } from 'src/activity/entities/activity.entity';
 import { AbilityActions } from 'src/auth/policy/user-ability.factory';
 import { CreateClaimDto } from 'src/claims/dto/create-claim.dto';
 import { Claim } from 'src/claims/entities/claim.entity';
+import { WorkClient } from 'src/client/entities/work-client.entity';
 import { Invite } from 'src/invite/entities/invite.entity';
 import { MonthlyTimeReview } from 'src/monthly-time-review/entities/monthly-time-review.entity';
 import { Project } from 'src/project/entities/project.entity';
@@ -98,7 +99,12 @@ export async function seedCreate() {
     { action: AbilityActions.Create, subject: WorkerCategory.name },
     { action: AbilityActions.Read,   subject: WorkerCategory.name },
     { action: AbilityActions.Update, subject: WorkerCategory.name },
-    { action: AbilityActions.Delete, subject: WorkerCategory.name }
+    { action: AbilityActions.Delete, subject: WorkerCategory.name },
+    { action: AbilityActions.Manage, subject: WorkClient.name },
+    { action: AbilityActions.Create, subject: WorkClient.name },
+    { action: AbilityActions.Read,   subject: WorkClient.name },
+    { action: AbilityActions.Update, subject: WorkClient.name },
+    { action: AbilityActions.Delete, subject: WorkClient.name }
   ];
   await Promise.all(
     claims.map(async (claim) => {

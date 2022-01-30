@@ -58,8 +58,9 @@ model Worker {
     workerPositionId Int
     workerCategoryId Int
 
-    invitation Invite?
-    user       User?
+    invitation          Invite?
+    user                User?
+    responsibleProjects Project[]
 }
 
 model WorkerCategory {
@@ -81,15 +82,38 @@ model Invite {
     workerId Int    @unique
 }
 
+model WorkClient {
+    id               Int       @id @default(autoincrement())
+    name             String    @unique
+    address          String
+    contactPhone     String
+    isActive         Boolean   @default(true)
+    clientProjects   Project[] @relation("client")
+    executorProjects Project[] @relation("executor")
+}
+
 model Project {
-    id      Int    @id @default(autoincrement())
-    summary String
+    id                  Int        @id @default(autoincrement())
+    name                String
+    summary             String
+    startDate           DateTime
+    endDate             DateTime
+    activities          Activity[]
+    client              WorkClient @relation("client", fields: [clientId], references: [id])
+    clientId            Int
+    executor            WorkClient @relation("executor", fields: [executorId], references: [id])
+    executorId          Int
+    responsible         Worker     @relation(fields: [responsibleWorkerId], references: [id])
+    responsibleWorkerId Int
 }
 
 model Activity {
     id          Int    @id @default(autoincrement())
     summary     String
     description String
+
+    project   Project? @relation(fields: [projectId], references: [id])
+    projectId Int?
 }
 
 model TimeReport {

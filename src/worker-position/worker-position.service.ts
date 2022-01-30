@@ -13,7 +13,7 @@ export class WorkerPositionService {
   constructor(private readonly _i18n: I18nService, private readonly _prisma: PrismaService) {}
 
   public async create(input: CreateWorkerPositionInput): Promise<WorkerPosition> {
-    await this.validateUniqueName(input.name);
+    await this.validateUniqueNameUpdate(input.name);
 
     const position = await this._prisma.workerPosition.create({ data: input });
     return plainToClass(WorkerPosition, position);
@@ -37,7 +37,7 @@ export class WorkerPositionService {
   public async update(id: number, update: UpdateWorkerPositionInput) {
     await this.validateId(id);
     if (update.name) {
-      await this.validateUniqueName(update.name);
+      await this.validateUniqueNameUpdate(update.name, id);
     }
 
     const updatedPosition = await this._prisma.workerPosition.update({ where: { id }, data: update });
@@ -46,7 +46,7 @@ export class WorkerPositionService {
 
   public async remove(id: number) {
     await this.validateId(id);
-    const removedUser  = await this._prisma.workerPosition.delete({ where: { id } });
+    const removedUser = await this._prisma.workerPosition.delete({ where: { id } });
     return plainToClass(WorkerPosition, removedUser);
   }
 
@@ -57,9 +57,19 @@ export class WorkerPositionService {
     }
   }
 
-  private async validateUniqueName(name: string) {
-    if (await this._prisma.workerPosition.findUnique({ where: { name } })) {
-      throw new ServerBusinessError(this._i18n.get('WorkerPosition_NameIsNotUnique', name));
+  private async validateUniqueNameUpdate(name?: string, id?: number) {
+    if (!name) {
+      return;
+    }
+
+    const position = await this._prisma.workerPosition.findUnique({ where: { name } });
+    if (position) {
+      if (!id) {
+        throw new ServerBusinessError(this._i18n.get('WorkerPosition_NameIsNotUnique', name));
+      }
+      if (position.id !== id) {
+        throw new ServerBusinessError(this._i18n.get('WorkerPosition_NameIsNotUnique', name));
+      }
     }
   }
 }

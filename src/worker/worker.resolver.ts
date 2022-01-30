@@ -36,9 +36,10 @@ export class WorkerResolver {
     @Args('skip', { nullable: true, type: () => Int }) skip: number,
     @Args('take', { nullable: true, type: () => Int }) take: number,
   ): Promise<Worker[]> {
-    if (!take) {
-      take = AppConstants.defaultTakeLimit;
+    if (filter) {
+      filter = JSON.parse(filter);
     }
+
     return this._workerService.findAll(filter, skip, take);
   }
 

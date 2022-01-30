@@ -11,6 +11,7 @@ import { Worker } from 'src/worker/entities/worker.entity';
 import { User } from 'src/users/entities/user.entity';
 import { WorkerCategory } from 'src/worker-category/entities/worker-category.entity';
 import { WorkerPosition } from 'src/worker-position/entities/worker-position.entity';
+import { WorkClient } from 'src/client/entities/work-client.entity';
 
 export enum AbilityActions {
   Manage = 'manage',
@@ -32,6 +33,7 @@ type AbilitySubjects =
       | typeof Worker
       | typeof WorkerCategory
       | typeof WorkerPosition
+      | typeof WorkClient
     >
   | 'all';
 

@@ -19,6 +19,7 @@ import { LocaleModule } from './misc/locale/locale.module';
 import { ValidationModule } from './misc/validation/validation.module';
 import { WorkerPositionModule } from './worker-position/worker-position.module';
 import { WorkerCategoryModule } from './worker-category/worker-category.module';
+import { WorkClientModule } from './client/work-client.module';
 
 @Module({
   imports: [
@@ -39,6 +40,7 @@ import { WorkerCategoryModule } from './worker-category/worker-category.module';
     ValidationModule,
     WorkerPositionModule,
     WorkerCategoryModule,
+    WorkClientModule,
   ],
   controllers: [],
   providers: [
