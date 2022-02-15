@@ -3,7 +3,6 @@ import { Injectable } from '@nestjs/common';
 import { Activity } from 'src/activity/entities/activity.entity';
 import { Claim } from 'src/claims/entities/claim.entity';
 import { Invite } from 'src/invite/entities/invite.entity';
-import { MonthlyTimeReview } from 'src/monthly-time-review/entities/monthly-time-review.entity';
 import { Project } from 'src/project/entities/project.entity';
 import { Role } from 'src/roles/entities/role.entity';
 import { RolesService } from 'src/roles/roles.service';
@@ -28,7 +27,6 @@ type AbilitySubjects =
       | typeof Role
       | typeof Invite
       | typeof Activity
-      | typeof MonthlyTimeReview
       | typeof Project
       | typeof Worker
       | typeof WorkerCategory

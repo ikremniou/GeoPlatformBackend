@@ -35,17 +35,6 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-type Activity {
-  """Example field (placeholder)"""
-  summary: String!
-  description: String!
-}
-
-type MonthlyTimeReview {
-  """Example field (placeholder)"""
-  field: String!
-}
-
 type WorkClient {
   id: Int!
   name: String!
@@ -56,20 +45,44 @@ type WorkClient {
 
 type Project {
   id: Int!
-  name: String!
-  summary: String
+  summary: String!
+  description: String
   startDate: DateTime!
-  endDate: DateTime!
+  endDate: DateTime
   activities: [Activity!]!
   client: WorkClient!
   executor: WorkClient!
   responsible: Worker!
 }
 
+type Activity {
+  id: Int!
+  summary: String!
+  description: String
+  project: Project!
+}
+
 type TimeReport {
-  """Example field (placeholder)"""
-  id: DateTime!
+  id: Int!
+  date: DateTime!
+  norm: Int
+  bonus: Int
+  penalty: Int
+  combine: Int
+  travel: Int
+  absent: AbsentReason
   comment: String
+  worker: Worker!
+  activity: Activity!
+  updatedAt: DateTime!
+}
+
+enum AbsentReason {
+  sick
+  vacation
+  expense
+  unknown
+  weekend
 }
 
 type Query {
@@ -81,14 +94,12 @@ type Query {
   workerPosition(id: Int!): WorkerPosition!
   projects(take: Int, skip: Int, filter: String): [Project!]!
   project(id: Int!): Project!
-  activities: [Activity!]!
-  activity(id: Int!): Activity!
-  timeReports: [TimeReport!]!
-  timeReport(id: String!): TimeReport!
-  monthlyTimeReviews: [MonthlyTimeReview!]!
-  monthlyTimeReview(id: Int!): MonthlyTimeReview!
   workClients(take: Int, skip: Int, filter: String): [WorkClient!]!
   workClient(id: Int!): WorkClient!
+  activities(take: Int, skip: Int, filter: String): [Activity!]!
+  activity(id: Int!): Activity!
+  timeReports(take: Int, skip: Int, filter: String): [TimeReport!]!
+  timeReport(id: Float!): TimeReport!
 }
 
 type Mutation {
@@ -104,18 +115,15 @@ type Mutation {
   createProject(createProjectInput: CreateProjectInput!): Project!
   updateProject(updateProjectInput: UpdateProjectInput!): Project!
   removeProject(id: Int!): Project!
+  createWorkClient(createWorkClientInput: CreateWorkClientInput!): WorkClient!
+  updateWorkClient(updateWorkClientInput: UpdateWorkClientInput!): WorkClient!
+  removeWorkClient(id: Int!): WorkClient!
   createActivity(createActivityInput: CreateActivityInput!): Activity!
   updateActivity(updateActivityInput: UpdateActivityInput!): Activity!
   removeActivity(id: Int!): Activity!
   createTimeReport(createTimeReportInput: CreateTimeReportInput!): TimeReport!
   updateTimeReport(updateTimeReportInput: UpdateTimeReportInput!): TimeReport!
-  removeTimeReport(id: String!): TimeReport!
-  createMonthlyTimeReview(createMonthlyTimeReviewInput: CreateMonthlyTimeReviewInput!): MonthlyTimeReview!
-  updateMonthlyTimeReview(updateMonthlyTimeReviewInput: UpdateMonthlyTimeReviewInput!): MonthlyTimeReview!
-  removeMonthlyTimeReview(id: Int!): MonthlyTimeReview!
-  createWorkClient(createWorkClientInput: CreateWorkClientInput!): WorkClient!
-  updateWorkClient(updateWorkClientInput: UpdateWorkClientInput!): WorkClient!
-  removeWorkClient(id: Int!): WorkClient!
+  removeTimeReport(id: Float!): TimeReport!
 }
 
 input CreateWorkerInput {
@@ -170,56 +178,23 @@ input UpdateWorkerPositionInput {
 }
 
 input CreateProjectInput {
-  name: String!
-  summary: String
+  summary: String!
+  description: String
   startDate: DateTime!
-  endDate: DateTime!
+  endDate: DateTime
   clientId: Int!
   executorId: Int!
   responsibleWorkerId: Int!
 }
 
 input UpdateProjectInput {
-  name: String
   summary: String
+  description: String
   startDate: DateTime
   endDate: DateTime
   clientId: Int
   executorId: Int
   responsibleWorkerId: Int
-  id: Int!
-}
-
-input CreateActivityInput {
-  """Example field (placeholder)"""
-  summary: String!
-  description: String!
-}
-
-input UpdateActivityInput {
-  """Example field (placeholder)"""
-  summary: String
-  description: String
-  id: Int!
-}
-
-input CreateTimeReportInput {
-  comment: String
-}
-
-input UpdateTimeReportInput {
-  comment: String
-  id: String!
-}
-
-input CreateMonthlyTimeReviewInput {
-  """Example field (placeholder)"""
-  field: String!
-}
-
-input UpdateMonthlyTimeReviewInput {
-  """Example field (placeholder)"""
-  field: String
   id: Int!
 }
 
@@ -235,4 +210,44 @@ input UpdateWorkClientInput {
   contactPhone: String
   id: Int!
   isActive: Boolean
+}
+
+input CreateActivityInput {
+  summary: String!
+  description: String
+  projectId: Int!
+}
+
+input UpdateActivityInput {
+  summary: String
+  description: String
+  projectId: Int
+  id: Int!
+}
+
+input CreateTimeReportInput {
+  date: DateTime!
+  norm: Int
+  bonus: Int
+  penalty: Int
+  combine: Int
+  travel: Int
+  absent: AbsentReason
+  comment: String
+  activityId: Int!
+  workerId: Int!
+}
+
+input UpdateTimeReportInput {
+  date: DateTime
+  norm: Int
+  bonus: Int
+  penalty: Int
+  combine: Int
+  travel: Int
+  absent: AbsentReason
+  comment: String
+  activityId: Int
+  workerId: Int
+  id: Int!
 }

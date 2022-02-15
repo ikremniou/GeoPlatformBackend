@@ -3,13 +3,13 @@ import { InputType, Field, Int } from '@nestjs/graphql';
 @InputType()
 export class CreateProjectInput {
   @Field()
-  name: string;
-  @Field({ nullable: true })
   summary: string;
+  @Field({ nullable: true })
+  description?: string;
   @Field()
   startDate: Date;
-  @Field()
-  endDate: Date;
+  @Field({ nullable: true })
+  endDate?: Date;
   @Field(() => Int)
   clientId: number;
   @Field(() => Int)

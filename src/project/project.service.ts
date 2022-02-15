@@ -11,6 +11,7 @@ import { Project } from './entities/project.entity';
 export class ProjectService {
   constructor(private readonly _i18n: I18nService, private readonly _prisma: PrismaService) {}
   public async create(createProjectInput: CreateProjectInput): Promise<Project> {
+    await this.validateUniqueSummary(createProjectInput.summary);
     const createdProject = await this._prisma.project.create({ data: createProjectInput });
     return plainToClass(Project, createdProject);
   }
@@ -26,7 +27,7 @@ export class ProjectService {
   }
 
   public async update(id: number, updateProjectInput: UpdateProjectInput): Promise<Project> {
-    await this.validateId(id);
+    await Promise.all([this.validateId(id), this.validateUniqueSummary(updateProjectInput.summary, id)]);
     const updatedProject = await this._prisma.project.update({ where: { id }, data: updateProjectInput });
     return plainToClass(Project, updatedProject);
   }
@@ -40,6 +41,19 @@ export class ProjectService {
   private async validateId(id: number): Promise<void> {
     if (!(await this._prisma.project.findUnique({ where: { id } }))) {
       throw new ServerBusinessError(this._i18n.get('Project_InvalidId', id));
+    }
+  }
+
+  private async validateUniqueSummary(summary?: string, id?: number): Promise<void> {
+    if (!summary) {
+      return;
+    }
+
+    const project = await this._prisma.project.findUnique({ where: { summary } });
+    if (project) {
+      if (!id || project.id !== id) {
+        throw new ServerBusinessError(this._i18n.get('Project_SummaryIsNotUnique', summary));
+      }
     }
   }
 }

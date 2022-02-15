@@ -22,4 +22,11 @@ export enum messages {
   Client_NameIsNotUnique = 'Организация с названием "{0}" уже существует',
   Client_InvalidId = 'Организация с идентификатором "{0}" отсутствует в базе данных',
   Project_InvalidId = 'Проект с идентификатором "{0}" отсутствует в базе данных',
+  Project_SummaryIsNotUnique = 'Проект с названием "{0}" уже существует',
+  Activity_InvalidId = 'Задача с идентификатором "{0}" отсутствует в базе данных',
+  Activity_ProjectIdAndSummaryExists = 'У проекта с идентификатором "{0}" уже существует задача "{1}"',
+  TimeReport_ActivityDoesNotExist = 'Не удалось занести отчёт. Задачи с идентификатором "{0}" не существует в базе данных',
+  TimeReport_WorkerDoesNotExist = 'Не удалось занести отчёт. Рабочий с идентификатором "{0}" отсутствует в базе данных',
+  TimeReport_InvalidId = 'Не удалось найти отчёт с идентификатором "{0}"',
+  TimeReport_DateWorkerIdActivityIdIsNotUnique = 'Отчёт на дату "{0}", не является уникальным',
 }

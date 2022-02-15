@@ -1,4 +1,4 @@
-import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { Resolver, Query, Mutation, Args, Int } from '@nestjs/graphql';
 import { TimeReportService } from './time-report.service';
 import { TimeReport } from './entities/time-report.entity';
 import { CreateTimeReportInput } from './dto/create-time-report.input';
@@ -16,27 +16,31 @@ export class TimeReportResolver {
   }
 
   @Query(() => [TimeReport], { name: 'timeReports' })
-  public findAll(): Promise<TimeReport[]> {
-    return this.timeReportService.findAll();
+  public findAll(
+    @Args('filter', { nullable: true }) filter: string,
+    @Args('skip', { nullable: true, type: () => Int }) skip: number,
+    @Args('take', { nullable: true, type: () => Int }) take: number,
+  ): Promise<TimeReport[]> {
+    if (filter) {
+      filter = JSON.parse(filter);
+    }
+    return this.timeReportService.findAll(filter, skip, take);
   }
 
   @Query(() => TimeReport, { name: 'timeReport' })
-  public findOne(@Args('id') id: string): Promise<TimeReport> {
-    const reportId = new Date(id);
-    return this.timeReportService.findOne(reportId);
+  public findOne(@Args('id') id: number): Promise<TimeReport> {
+    return this.timeReportService.findOne(id);
   }
 
   @Mutation(() => TimeReport)
   public updateTimeReport(
     @Args('updateTimeReportInput') updateTimeReportInput: UpdateTimeReportInput,
   ): Promise<TimeReport> {
-    const timeReportId = new Date(updateTimeReportInput.id);
-    return this.timeReportService.update(timeReportId, updateTimeReportInput);
+    return this.timeReportService.update(updateTimeReportInput.id, updateTimeReportInput);
   }
 
   @Mutation(() => TimeReport)
-  public removeTimeReport(@Args('id') id: string): Promise<TimeReport> {
-    const timeReportId = new Date(id);
-    return this.timeReportService.remove(timeReportId);
+  public removeTimeReport(@Args('id') id: number): Promise<TimeReport> {
+    return this.timeReportService.remove(id);
   }
 }

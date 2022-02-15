@@ -1,9 +1,16 @@
-import { ObjectType, Field } from '@nestjs/graphql';
+import { ObjectType, Field, Int } from '@nestjs/graphql';
+import { Project } from 'src/project/entities/project.entity';
 
 @ObjectType()
 export class Activity {
-  @Field({ description: 'Example field (placeholder)' })
-  summary: string;
+  @Field(() => Int)
+  id: number;
   @Field()
-  description: string;
+  summary: string;
+  @Field({ nullable: true })
+  description?: string;
+  @Field()
+  project: Project;
+
+  projectId: number;
 }

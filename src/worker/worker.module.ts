@@ -9,5 +9,6 @@ import { WorkerCategoryModule } from 'src/worker-category/worker-category.module
 @Module({
   imports: [DataModule, PolicyModule, WorkerCategoryModule, WorkerPositionModule],
   providers: [WorkerResolver, WorkerService],
+  exports: [WorkerService],
 })
 export class WorkerModule {}

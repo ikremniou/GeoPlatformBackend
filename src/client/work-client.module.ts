@@ -8,5 +8,6 @@ import { LocaleModule } from 'src/misc/locale/locale.module';
 @Module({
   imports: [PolicyModule, DataModule, LocaleModule],
   providers: [WorkClientResolver, WorkClientService],
+  exports: [WorkClientService],
 })
 export class WorkClientModule {}

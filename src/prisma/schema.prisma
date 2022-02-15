@@ -13,30 +13,33 @@ enum UserStatus {
 }
 
 model Claim {
-    id        Int     @id @default(autoincrement())
+    id        Int      @id @default(autoincrement())
     action    String
     subject   String
     condition String?
     roles     Role[]
+    updatedAt DateTime @updatedAt
 }
 
 model Role {
-    id     Int     @id @default(autoincrement())
-    name   String  @unique
-    claims Claim[]
-    users  User[]
+    id        Int      @id @default(autoincrement())
+    name      String   @unique
+    claims    Claim[]
+    users     User[]
+    updatedAt DateTime @updatedAt
 }
 
 model User {
-    id       Int        @id @default(autoincrement())
-    username String     @unique
-    email    String     @unique
-    status   UserStatus @default(active)
-    password String
-    role     Role?      @relation(fields: [roleId], references: [id])
-    roleId   Int?
-    worker   Worker?    @relation(fields: [workerId], references: [id])
-    workerId Int?       @unique
+    id        Int        @id @default(autoincrement())
+    username  String     @unique
+    email     String     @unique
+    status    UserStatus @default(active)
+    password  String
+    role      Role?      @relation(fields: [roleId], references: [id])
+    roleId    Int?
+    worker    Worker?    @relation(fields: [workerId], references: [id])
+    workerId  Int?       @unique
+    updatedAt DateTime   @updatedAt
 }
 
 model Worker {
@@ -61,12 +64,14 @@ model Worker {
     invitation          Invite?
     user                User?
     responsibleProjects Project[]
+    timeReport          TimeReport[]
 }
 
 model WorkerCategory {
-    id     Int      @id @default(autoincrement())
-    name   String   @unique
-    worker Worker[]
+    id        Int      @id @default(autoincrement())
+    name      String   @unique
+    worker    Worker[]
+    updatedAt DateTime @updatedAt
 }
 
 model WorkerPosition {
@@ -74,12 +79,14 @@ model WorkerPosition {
     name       String   @unique
     baseSalary Decimal
     worker     Worker[]
+    updatedAt  DateTime @updatedAt
 }
 
 model Invite {
-    id       String @id @default(uuid())
-    worker   Worker @relation(fields: [workerId], references: [id])
-    workerId Int    @unique
+    id        String   @id @default(uuid())
+    worker    Worker   @relation(fields: [workerId], references: [id])
+    workerId  Int      @unique
+    updatedAt DateTime @updatedAt
 }
 
 model WorkClient {
@@ -90,14 +97,15 @@ model WorkClient {
     isActive         Boolean   @default(true)
     clientProjects   Project[] @relation("client")
     executorProjects Project[] @relation("executor")
+    updatedAt        DateTime  @updatedAt
 }
 
 model Project {
     id                  Int        @id @default(autoincrement())
-    name                String
-    summary             String
+    summary             String     @unique
+    description         String?
     startDate           DateTime
-    endDate             DateTime
+    endDate             DateTime?
     activities          Activity[]
     client              WorkClient @relation("client", fields: [clientId], references: [id])
     clientId            Int
@@ -105,23 +113,45 @@ model Project {
     executorId          Int
     responsible         Worker     @relation(fields: [responsibleWorkerId], references: [id])
     responsibleWorkerId Int
+    updatedAt           DateTime   @updatedAt
 }
 
 model Activity {
-    id          Int    @id @default(autoincrement())
+    id          Int          @id @default(autoincrement())
     summary     String
-    description String
+    description String?
+    project     Project      @relation(fields: [projectId], references: [id])
+    projectId   Int
+    timeReports TimeReport[]
 
-    project   Project? @relation(fields: [projectId], references: [id])
-    projectId Int?
+    updatedAt DateTime @updatedAt
+    @@unique([summary, projectId])
+}
+
+enum AbsentReason {
+    sick
+    vacation
+    expense
+    unknown
+    weekend
 }
 
 model TimeReport {
-    id      DateTime @id @default(now())
+    id      Int           @id @default(autoincrement())
+    date    DateTime
+    norm    Int?
+    bonus   Int?
+    penalty Int?
+    combine Int?
+    travel  Int?
+    absent  AbsentReason?
     comment String?
-}
 
-model MonthlyTimeReview {
-    id    Int    @id @default(autoincrement())
-    field String
+    worker     Worker   @relation(fields: [workerId], references: [id])
+    workerId   Int
+    activity   Activity @relation(fields: [activityId], references: [id])
+    activityId Int
+    updatedAt  DateTime @unique @updatedAt
+
+    @@unique([date, workerId, activityId])
 }

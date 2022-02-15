@@ -8,12 +8,12 @@ export class Project {
   @Field(() => Int)
   id: number;
   @Field()
-  name: string;
-  @Field({ nullable: true })
   summary: string;
+  @Field({ nullable: true })
+  description: string;
   @Field()
   startDate: Date;
-  @Field()
+  @Field({ nullable: true })
   endDate: Date;
   @Field(() => [Activity])
   activities: Activity[];
